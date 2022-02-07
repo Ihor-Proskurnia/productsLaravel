@@ -34,7 +34,7 @@ class ProductController extends Controller
     */
     public function getAllProducts(Request $request)
     {
-        $data = $this->productService->getAllProducts($request->get('sort'));
+        $data = $this->productService->productRepository->getAllProducts($request->get('sort'));
         return view('home', compact('data'));
     }
 
@@ -77,18 +77,15 @@ class ProductController extends Controller
     */
     public function storeProduct(Request $request)
     {
-        if (Auth::check())
-        {
-            $request->validate([
-                'name' => 'required|max:255',
-                'price' => 'required',
-                'desc' => 'required',
-            ]);
+        $request->validate([
+            'name' => 'required|max:255',
+            'price' => 'required',
+            'desc' => 'required',
+        ]);
 
-            $this->productService->productRepository->storeProduct($request->all());
-        
-            return redirect()->route('getAllProducts');
-        }
+        $this->productService->productRepository->storeProduct($request->all());
+    
+        return redirect()->route('getAllProducts');
     }
 
     /**
@@ -100,19 +97,16 @@ class ProductController extends Controller
     */
     public function updateProduct(Request $request)
     {
-        if (Auth::check())
-        {
-            $request->validate([
-                'id' => 'required',
-                'name' => 'required|max:255',
-                'price' => 'required',
-                'desc' => 'required',
-            ]);
+        $request->validate([
+            'id' => 'required',
+            'name' => 'required|max:255',
+            'price' => 'required',
+            'desc' => 'required',
+        ]);
 
-            $this->productService->productRepository->updateProduct($request->only(['id','name', 'price', 'desc']));
-        
-            return redirect()->route('getAllProducts');
-        }
+        $this->productService->productRepository->updateProduct($request->only(['id','name', 'price', 'desc']));
+    
+        return redirect()->route('getAllProducts');
     }
 
     /**
@@ -124,11 +118,8 @@ class ProductController extends Controller
     */
     public function deleteById(Request $request)
     {
-        if (Auth::check())
-        {
-            $this->productService->productRepository->deleteById($request->get('id'));
+        $this->productService->productRepository->deleteById($request->get('id'));
 
-            return redirect()->route('getAllProducts');
-        }
+        return redirect()->route('getAllProducts');
     }
 }

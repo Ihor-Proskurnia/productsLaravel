@@ -18,16 +18,4 @@ class ProductService
   {
     $this->productRepository = $productRepository;
   }
-
-  /**
-  * Get products.
-  *
-  * @param string $sort
-  *
-  * @return array
-  */
-  public function getAllProducts($sort)
-  {
-    return $this->productRepository->getAllProducts($sort);
-  }
 }
